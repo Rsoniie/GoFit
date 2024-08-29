@@ -1,18 +1,28 @@
 
 import React from 'react';
+import { useEffect } from 'react';
 import {ActivityIndicator, StyleSheet, View, Text} from 'react-native';
 import { globalStyles } from '../styles';
 
-const App = () => (
+const App = ({navigation} : any) => {
+  
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      navigation.replace('Home');
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, [navigation]);
+  
+  
+  return (
   <View style = {globalStyles.container}>
   <View style={globalStyles.container}>
       <Text style = {globalStyles.text_loader}>
         GoFit
       </Text>
-    {/* <ActivityIndicator style = {globalStyles.loader} size="large" /> */}
   </View>
   </View>
-);
+)};
 const styles = StyleSheet.create({
   container: {
     flex: 1,

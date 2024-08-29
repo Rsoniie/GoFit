@@ -42,6 +42,7 @@ const globalStyles = StyleSheet.create({
   buttonText: {
     color: colors.white,
     fontSize: 16,
+    backgroundColor: colors.background_primary
   },
   loader: {
     
