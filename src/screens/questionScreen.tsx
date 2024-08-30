@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
 import { globalStyles, colors } from '../styles'; // Assuming you have these styles defined elsewhere
+import firestore, {firebase} from '@react-native-firebase/firestore';
+
 
 const { width } = Dimensions.get('screen');
 
@@ -15,9 +17,27 @@ const QuestionnaireScreen = ({ navigation } : any) => {
   const [activityRate, setActivityRate] = useState('');
 
   const handleSubmit = () => {
-    // Handle submission logic here
+
     console.log({ firstName, lastName, age, height, weight, goalWeight, goalTime, activityRate });
-    navigation.replace('Home');
+    const user = firebase.auth().currentUser;
+    firestore()
+    .collection('Users')
+    .doc(user?.uid)
+    .set({
+        firstname : firstName,
+        lastName: lastName,
+        age: age,
+        height: height,
+        weight: weight,
+        goalWeight: goalWeight,
+        goalTime: goalTime,
+        activityRate: activityRate
+    })
+    .then(() => {
+      navigation.replace('Home');
+      console.log('User added!');
+    })
+    
   };
 
   return (

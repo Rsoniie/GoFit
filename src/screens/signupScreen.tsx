@@ -97,19 +97,22 @@
 import React, { useState } from 'react';
 import { SafeAreaView, View, Text, TextInput, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { globalStyles, colors } from '../styles';
+import firebaseUtil from '../utils/firebaseUtil';
 
 const SignupScreen = ({ navigation } : any) => {  // Accept navigation as a prop
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+
   const handleSignup = () => {
-    if (username && password) {
-      // Navigate to the "questions" screen
-      navigation.replace('questions');
-    } else {
-      Alert.alert('Error', 'Please enter both username and password.');
-    }
-  };
+    firebaseUtil.signup(username, password)
+    .then(()=> {navigation.replace('questions')})
+    .catch((err) => 
+   {
+     console.log(err);
+     Alert.alert("Something went wrong");
+   })
+};
 
   return (
     <SafeAreaView style={styles.container}>

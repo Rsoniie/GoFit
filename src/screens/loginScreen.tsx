@@ -1,19 +1,29 @@
 import React, { useState } from 'react';
 import {View, Text, TextInput, TouchableOpacity, StyleSheet,Alert,} from 'react-native';
 import { globalStyles, colors } from '../styles';
+import { firebase } from '@react-native-firebase/firestore';
+import firebaseUtil from '../utils/firebaseUtil';
 
 
-const LoginScreen = () => {
+const LoginScreen = ({navigation} : any) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    if (email === '' || password === '') {
-      Alert.alert('Please enter both email and password');
-      return;
-    }
-    Alert.alert('Login successful', `Email: ${email}`);
+       firebaseUtil.signin(email, password)
+       .then(() => {navigation.replace('Home')})
+       .catch((err) => 
+      {
+        console.log(err);
+        Alert.alert("Please enter valid Email and password or Create new one");
+      })
   };
+
+  // const handleSignup = () => 
+  // {
+  //      console.log("Button Pressed");
+  //   navigation.navigate('login');
+  // }
 
   return (
     <View style={styles.container}>
@@ -36,7 +46,7 @@ const LoginScreen = () => {
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => Alert.alert('Navigate to Sign Up')}>
+      <TouchableOpacity onPress={() => navigation.navigate("signup")}>
         <Text style={styles.linkText}>Don't have an account? Sign Up</Text>
       </TouchableOpacity>
     </View>

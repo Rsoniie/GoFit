@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { globalStyles, colors } from './src/styles';
 import { NavigationContainer } from '@react-navigation/native';
@@ -10,6 +10,13 @@ import ProfileScreen from './src/screens/profileScreen';
 import SignupScreen from './src/screens/signupScreen';
 import CameraScreen from './src/screens/cameraScreen';
 import QuestionnaireScreen from './src/screens/questionScreen';
+import dbchk from './rough/dbcheck';
+import Meter from './src/components/meter';
+
+
+
+// import LoginProvider from './src/utils/loginprovider';
+import { LoginContext } from './src/utils/loginprovider';
 
 // const add = './src/assets/rimg.jpg';
 
@@ -17,10 +24,16 @@ const Stack = createNativeStackNavigator();
 
 const App = ({navigation} : any) => {
 
-
+const {user, isLoading} = useContext(LoginContext);
+console.log(user, isLoading);
+  
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="signup">
+      <Stack.Navigator initialRouteName='Home'>
+        {(isLoading ? <Stack.Screen name = "loading" component={loadingScreen}/> : 
+        user ? <Stack.Screen name='Home' component={HomeScreen}/> 
+        : <Stack.Screen name = 'signin' component={LoginScreen} options={{headerShown : false}}/> )}
+
         <Stack.Screen name="loading" component={loadingScreen} options={{headerShown: false}} />
           <Stack.Screen
           name="Home"
@@ -39,6 +52,8 @@ const App = ({navigation} : any) => {
         <Stack.Screen name="signup" component={SignupScreen} options={{headerShown: false}} />
         <Stack.Screen name="camera" component={CameraScreen} options={{headerShown: false}} />
         <Stack.Screen name="questions" component={QuestionnaireScreen} options={{headerShown: false}} />
+        <Stack.Screen name="dbchk" component={dbchk} options={{title: "Checking"}} />
+        <Stack.Screen name="meter" component={Meter} options={{title: "meter"}} />
          
       </Stack.Navigator>
     </NavigationContainer>
