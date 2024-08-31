@@ -13,6 +13,7 @@ import QuestionnaireScreen from './src/screens/questionScreen';
 import dbchk from './rough/dbcheck';
 import Meter from './src/components/meter';
 import urlcheck from './rough/urlcheck';
+import Edit from './src/screens/editProfileScreen';
 
 
 
@@ -30,11 +31,10 @@ console.log(user, isLoading);
   
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='Home'>
+      <Stack.Navigator initialRouteName='edit'>
         {(isLoading ? <Stack.Screen name = "loading" component={loadingScreen}/> : 
         user ? <Stack.Screen name='Home' component={HomeScreen} options={{headerShown: false}}/> 
         : <Stack.Screen name = 'signin' component={LoginScreen} options={{headerShown : false}}/> )}
-
         <Stack.Screen name="loading" component={loadingScreen} options={{headerShown: false}} />
           <Stack.Screen
           name="Home"
@@ -56,6 +56,7 @@ console.log(user, isLoading);
         <Stack.Screen name="dbchk" component={dbchk} options={{title: "Checking"}} />
         <Stack.Screen name="meter" component={Meter} options={{title: "meter"}} />
         <Stack.Screen name='urlcheck' component={urlcheck}/>
+        <Stack.Screen name='edit' component={Edit}/>
          
       </Stack.Navigator>
     </NavigationContainer>

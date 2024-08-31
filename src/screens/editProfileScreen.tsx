@@ -9,6 +9,8 @@ import {
   StyleSheet,
   ScrollView,
   Alert,
+  ActivityIndicator,
+  TextInput,
 } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import { firebase } from '@react-native-firebase/auth'; // Import firebase auth for user authentication
@@ -55,25 +57,9 @@ const ProfileScreen = ({navigation} : any) => {
   }, []);
    
 
-  const handleLogout = () => 
+  const handleSubmit = () => 
   {
-    console.log("Logout Button Clicked");
-    firebaseUtil.signout().then(() => navigation.replace('signin')).then(() => 
-    {
-        console.log("Logout Successfully"); 
-    }).catch((err) => {console.log(err)});
-    
-  }
-
-  const handleDelete = () => 
-  {
-      console.log("Delete button is pressed");
-      firebaseUtil.delete()?.then(() => navigation.replace('signup')).then(() => 
-      {
-        console.log("User deleted Sucessfully");
-      }).catch((err) => {
-        console.log(err);
-      })
+     console.log(age, height, weight, goalWeight, activityRate);
   }
 
 
@@ -85,15 +71,11 @@ const ProfileScreen = ({navigation} : any) => {
       />
       <Text style={globalStyles.title}>{`${firstName} ${lastName}`}</Text>
       <Text style={styles.email}>{firebase.auth().currentUser?.email}</Text>
-
-      <TouchableOpacity style={styles.button} onPress={() => {navigation.navigate('edit')}}>
-        <Text style={styles.buttonText}>Edit Profile</Text>
-      </TouchableOpacity>
     
 
-      <View style={styles.option}>
+      <TextInput style={styles.option}>
         <Text style={globalStyles.text}>Age : {age}</Text>
-      </View>
+      </TextInput>
 
       <View style={styles.option}>
         <Text style={globalStyles.text}>Height : {height}</Text>
@@ -116,11 +98,8 @@ const ProfileScreen = ({navigation} : any) => {
      
 
       <View style={styles.logDel}>
-        <TouchableOpacity style={styles.logoutButton} onPress={ () => handleLogout()}>
-          <Text style={styles.logoutButtonText}>Logout</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.Delbutton} onPress={() => handleDelete()}>
-          <Text style={styles.logoutButtonText}>Delete</Text>
+        <TouchableOpacity style={styles.logoutButton} onPress={ () => handleSubmit()}>
+          <Text style={styles.logoutButtonText}>Submit</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
@@ -129,6 +108,7 @@ const ProfileScreen = ({navigation} : any) => {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     padding: 16,
     backgroundColor: colors.background_primary,
   },
