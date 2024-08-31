@@ -14,6 +14,8 @@ import dbchk from './rough/dbcheck';
 import Meter from './src/components/meter';
 import urlcheck from './rough/urlcheck';
 import Edit from './src/screens/editProfileScreen';
+// import Dish from './src/components/mapping';
+// import Mappingtest from './rough/mappingtest';
 
 
 
@@ -31,7 +33,7 @@ console.log(user, isLoading);
   
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='edit'>
+      <Stack.Navigator initialRouteName='loading'>
         {(isLoading ? <Stack.Screen name = "loading" component={loadingScreen}/> : 
         user ? <Stack.Screen name='Home' component={HomeScreen} options={{headerShown: false}}/> 
         : <Stack.Screen name = 'signin' component={LoginScreen} options={{headerShown : false}}/> )}
@@ -56,7 +58,8 @@ console.log(user, isLoading);
         <Stack.Screen name="dbchk" component={dbchk} options={{title: "Checking"}} />
         <Stack.Screen name="meter" component={Meter} options={{title: "meter"}} />
         <Stack.Screen name='urlcheck' component={urlcheck}/>
-        <Stack.Screen name='edit' component={Edit}/>
+        <Stack.Screen name='edit' component={Edit}/> 
+        {/* <Stack.Screen name='map' component={Mappingtest}/>  */}
          
       </Stack.Navigator>
     </NavigationContainer>
