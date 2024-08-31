@@ -229,14 +229,16 @@
 
 
 
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity, Image } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity, Image, Alert } from 'react-native';
 import { launchCamera, CameraOptions } from 'react-native-image-picker';
 import RNFS from 'react-native-fs';
 import { globalStyles, colors } from '../styles';
 import Meter from '../components/meter';
 import { SafeAreaView, TextInput, Button, ActivityIndicator } from 'react-native';
-import axios from 'axios'; // Import axios
+import axios from 'axios';
+import { firebase } from '@react-native-firebase/firestore';
+import firestore from '@react-native-firebase/firestore';
 
 const { width } = Dimensions.get('screen');
 
@@ -246,6 +248,54 @@ const HomeScreen = ({ navigation }: any) => {
   const [responseData, setResponseData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [age, setAge] = useState('');
+  const [height, setHeight] = useState('');
+  const [weight, setWeight] = useState('');
+  const [goalWeight, setGoalWeight] = useState('');
+  const [goalTime, setGoalTime] = useState('');
+  const [activityRate, setActivityRate] = useState('');
+
+
+
+
+
+
+
+
+
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const user = firebase.auth().currentUser;
+      if (user) {
+        try {
+          const userDoc = await firestore()
+            .collection('Users')
+            .doc(user.uid)
+            .get();
+
+          if (userDoc.exists) {
+            const data = userDoc.data();
+            setFirstName(data?.firstname || '');
+            setLastName(data?.lastName || '');
+            setAge(data?.age || '');
+            setHeight(data?.height || '');
+            setWeight(data?.weight || '');
+            setGoalWeight(data?.goalWeight || '');
+            setGoalTime(data?.goalTime || '');
+            setActivityRate(data?.activityRate || '');
+          }
+        } catch (error) {
+          console.error('Error fetching user data: ', error);
+        }
+      }
+    };
+
+    fetchUserData();
+  }, []);
+   
 
   const handleClick = async () => {
     console.log("Camera Clicked");
@@ -299,6 +349,8 @@ const HomeScreen = ({ navigation }: any) => {
                 if (data) {
                   setResponseData(data);
                   console.log('API Response:', data);
+                  // Alert.alert(data);
+                  
                 } else {
                   console.log('API returned a non-JSON or empty response');
                 }
@@ -324,7 +376,7 @@ const HomeScreen = ({ navigation }: any) => {
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.text_container}>
-          <Text style={[globalStyles.title, styles.title]}>Hello Hriday</Text>
+          <Text style={[globalStyles.title, styles.title]}>Hello {firstName}</Text>
           <Text style={globalStyles.text}>Find, track and eat healthy food</Text>
         </View>
 
