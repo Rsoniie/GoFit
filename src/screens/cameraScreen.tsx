@@ -1,8 +1,34 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView} from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
+import { launchCamera, Asset } from 'react-native-image-picker';
 import { globalStyles, colors } from '../styles';
 
 const CameraScreen = () => {
+  const [filePath, setFilePath] = useState<Asset | null>(null);
+  const [fileUri, setFileUri] = useState<string | null>(null);
+
+  const handleClick = () => {
+    const options = {
+      mediaType: 'photo',
+      cameraType: 'back',
+      saveToPhotos: true,
+    };
+
+    launchCamera(options, (response) => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.errorCode) {
+        console.log('ImagePicker Error: ', response.errorMessage);
+      } else if (response.assets && response.assets.length > 0) {
+        const asset = response.assets[0];
+        console.log('Asset = ', JSON.stringify(asset));
+
+        setFilePath(asset);
+        setFileUri(asset.uri || null);
+      }
+    });
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.viewfinder}>
@@ -14,7 +40,7 @@ const CameraScreen = () => {
           <Text style={styles.controlButtonText}>Flash</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.captureButton}>
+        <TouchableOpacity style={styles.captureButton} onPress={handleClick}>
           <View style={styles.captureButtonInner} />
         </TouchableOpacity>
 
@@ -29,7 +55,7 @@ const CameraScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background_primary ,
+    backgroundColor: colors.background_primary,
   },
   viewfinder: {
     flex: 1,

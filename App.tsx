@@ -29,7 +29,7 @@ console.log(user, isLoading);
   
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='Home'>
+      <Stack.Navigator initialRouteName='camera'>
         {(isLoading ? <Stack.Screen name = "loading" component={loadingScreen}/> : 
         user ? <Stack.Screen name='Home' component={HomeScreen}/> 
         : <Stack.Screen name = 'signin' component={LoginScreen} options={{headerShown : false}}/> )}
