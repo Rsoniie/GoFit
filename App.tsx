@@ -30,7 +30,7 @@ console.log(user, isLoading);
   
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='Home'>
+      <Stack.Navigator initialRouteName='loading'>
         {(isLoading ? <Stack.Screen name = "loading" component={loadingScreen}/> : 
         user ? <Stack.Screen name='Home' component={HomeScreen}/> 
         : <Stack.Screen name = 'signin' component={LoginScreen} options={{headerShown : false}}/> )}
@@ -62,18 +62,6 @@ console.log(user, isLoading);
   );
 };
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     backgroundColor: '#f5f5f5',
-//   },
-//   text: {
-//     fontSize: 24,
-//     color: '#333',
-//   },
-// });
 
 const styles = StyleSheet.create({
   container: {

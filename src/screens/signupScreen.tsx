@@ -134,7 +134,11 @@ const SignupScreen = ({ navigation } : any) => {  // Accept navigation as a prop
         <TouchableOpacity style={styles.submitButton} onPress={handleSignup}>
           <Text style={styles.submitButtonText}>Sign Up</Text>
         </TouchableOpacity>
+        
       </View>
+      <TouchableOpacity style = {styles.signinn} onPress={() => navigation.navigate("signin")}>
+        <Text style={styles.linkText}>Already have and Accound? Sign In</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
@@ -159,6 +163,15 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+  },
+  linkText: {
+    color: '#1E90FF',
+    textAlign: 'center',
+    marginTop: 10,
+  },
+  signinn: {
+     margin: 10,
+     bottom: -10
   },
   headerText: {
     fontSize: globalStyles.title.fontSize,

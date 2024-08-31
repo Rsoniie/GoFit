@@ -13,4 +13,9 @@ export default class firebaseUtil {
     {
         return  auth().signOut();
     };
+    public static delete = () => 
+    {
+        const user = auth().currentUser;
+        return user?.delete();
+    }
 }

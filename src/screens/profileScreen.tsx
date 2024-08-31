@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import firebaseUtil from '../utils/firebaseUtil';
+
 import {
   View,
   Text,
@@ -8,84 +10,125 @@ import {
   ScrollView,
   Alert,
 } from 'react-native';
-import {globalStyles, colors} from '../styles';
-const ProfileScreen = () => {
-  const user = {
-    name: 'Hriday Desai',
-    email: 'hriday@example.com',
-    profilePicture: 'https://via.placeholder.com/150',
-  };
+import firestore from '@react-native-firebase/firestore';
+import { firebase } from '@react-native-firebase/auth'; // Import firebase auth for user authentication
+import { globalStyles, colors } from '../styles';
 
-  const handleOptionPress = (option: any) => {
-    Alert.alert(`Selected option: ${option}`);
-  };
+const ProfileScreen = ({navigation} : any) => {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [age, setAge] = useState('');
+  const [height, setHeight] = useState('');
+  const [weight, setWeight] = useState('');
+  const [goalWeight, setGoalWeight] = useState('');
+  const [goalTime, setGoalTime] = useState('');
+  const [activityRate, setActivityRate] = useState('');
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const user = firebase.auth().currentUser;
+      if (user) {
+        try {
+          const userDoc = await firestore()
+            .collection('Users')
+            .doc(user.uid)
+            .get();
+
+          if (userDoc.exists) {
+            const data = userDoc.data();
+            setFirstName(data?.firstname || '');
+            setLastName(data?.lastName || '');
+            setAge(data?.age || '');
+            setHeight(data?.height || '');
+            setWeight(data?.weight || '');
+            setGoalWeight(data?.goalWeight || '');
+            setGoalTime(data?.goalTime || '');
+            setActivityRate(data?.activityRate || '');
+          }
+        } catch (error) {
+          console.error('Error fetching user data: ', error);
+        }
+      }
+    };
+
+    fetchUserData();
+  }, []);
+   
+
+  const handleLogout = () => 
+  {
+    console.log("Logout Button Clicked");
+    firebaseUtil.signout().then(() => navigation.replace('signin')).then(() => 
+    {
+        console.log("Logout Successfully"); 
+    }).catch((err) => {console.log(err)});
+    
+  }
+
+  const handleDelete = () => 
+  {
+      console.log("Delete button is pressed");
+      firebaseUtil.delete()?.then(() => navigation.replace('signup')).then(() => 
+      {
+        console.log("User deleted Sucessfully");
+      }).catch((err) => {
+        console.log(err);
+      })
+  }
+
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Image source={{uri: user.profilePicture}} style={styles.profileImage} />
-      <Text style={globalStyles.title}>{user.name}</Text>
-      <Text style={styles.email}>{user.email}</Text>
+      <Image
+        source={require('C:/Users/91629/Desktop/GoFit/rimg.jpg')}
+        style={styles.profileImage}
+      />
+      <Text style={globalStyles.title}>{`${firstName} ${lastName}`}</Text>
+      <Text style={styles.email}>{firebase.auth().currentUser?.email}</Text>
+
       <TouchableOpacity style={styles.button}>
         <Text style={styles.buttonText}>Edit Profile</Text>
       </TouchableOpacity>
+    
 
-      <TouchableOpacity
-        style={styles.option}
-        onPress={() => handleOptionPress('Settings')}>
-        <Text style={globalStyles.text}>Settings</Text>
-      </TouchableOpacity>
+      <View style={styles.option}>
+        <Text style={globalStyles.text}>Age : {age}</Text>
+      </View>
 
-      <TouchableOpacity
-        style={styles.option}
-        onPress={() => handleOptionPress('Privacy')}>
-        <Text style={globalStyles.text}>Privacy</Text>
-      </TouchableOpacity>
+      <View style={styles.option}>
+        <Text style={globalStyles.text}>Height : {height}</Text>
+      </View>
 
-      <TouchableOpacity
-        style={styles.option}
-        onPress={() => handleOptionPress('Dark Mode')}>
-        <Text style={globalStyles.text}>Dark Mode</Text>
-      </TouchableOpacity>
+      
+      <View style={styles.option}>
+        <Text style={globalStyles.text}>weight : {weight}</Text>
+      </View>
 
-      <TouchableOpacity
-        style={styles.option}
-        onPress={() => handleOptionPress('Notification Preferences')}>
-        <Text style={globalStyles.text}>Notification Preferences</Text>
-      </TouchableOpacity>
+      <View style={styles.option}>
+        <Text style={globalStyles.text}>Goal Weight : {goalWeight}</Text>
+      </View>
 
-      <TouchableOpacity
-        style={styles.option}
-        onPress={() => handleOptionPress('Security')}>
-        <Text style={globalStyles.text}>Security</Text>
-      </TouchableOpacity>
+    
+      <View style={styles.option}>
+        <Text style={globalStyles.text}>Activity Rate : {activityRate}</Text>
+      </View>
 
-      <TouchableOpacity
-        style={styles.option}
-        onPress={() => handleOptionPress('Help & Support')}>
-        <Text style={globalStyles.text}>Help & Support</Text>
-      </TouchableOpacity>
+     
 
-      <TouchableOpacity
-        style={styles.option}
-        onPress={() => handleOptionPress('About')}>
-        <Text style={globalStyles.text}>About</Text>
-      </TouchableOpacity>
-      <View style = {styles.logDel}>
-      <TouchableOpacity style={styles.logoutButton}>
-        <Text style={styles.logoutButtonText}>Logout</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.Delbutton}>
-        <Text style={styles.logoutButtonText}>Delete</Text>
-      </TouchableOpacity>
+      <View style={styles.logDel}>
+        <TouchableOpacity style={styles.logoutButton} onPress={ () => handleLogout()}>
+          <Text style={styles.logoutButtonText}>Logout</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.Delbutton} onPress={() => handleDelete()}>
+          <Text style={styles.logoutButtonText}>Delete</Text>
+        </TouchableOpacity>
       </View>
     </ScrollView>
-    
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    // alignItems: 'center',
     padding: 16,
     backgroundColor: colors.background_primary,
   },
@@ -94,12 +137,6 @@ const styles = StyleSheet.create({
     height: 150,
     borderRadius: 75,
     marginBottom: 20,
-  },
-  name: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    color: '#333',
   },
   email: {
     fontSize: 18,
@@ -112,7 +149,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
     borderRadius: 8,
     marginBottom: 15,
-    width: "50%"
+    width: '50%',
   },
   buttonText: {
     color: colors.white,
@@ -127,18 +164,14 @@ const styles = StyleSheet.create({
     borderBottomColor: colors.background_primary,
     width: '100%',
   },
-  optionText: {
-    fontSize: globalStyles.text.fontSize,
-    color: colors.primary_text,
-  },
   logoutButton: {
     backgroundColor: colors.button,
-    paddingVertical: 10,
+    paddingVertical: 6,
     paddingHorizontal: 40,
     borderRadius: 8,
     marginTop: 30,
     alignItems: 'center',
-    width: "40%"
+    width: '40%',
   },
   logoutButtonText: {
     color: '#fff',
@@ -147,20 +180,23 @@ const styles = StyleSheet.create({
   },
   logDel: {
     alignItems: 'center',
-    flexDirection: 'row', 
-    justifyContent: 'space-around',    
+    flexDirection: 'row',
+    justifyContent: 'space-around',
   },
   Delbutton: {
-    // backgroundColor: 'red',
     backgroundColor: colors.button,
-    paddingVertical: 10,
+    paddingVertical: 6,
     paddingHorizontal: 40,
     borderRadius: 8,
     marginTop: 30,
     alignItems: 'center',
-    width: "40%",
-    // borderColor: 'red',
-  }
+    width: '40%',
+  },
+  dataText: {
+    fontSize: 16,
+    marginBottom: 8,
+    color: colors.primary_text,
+  },
 });
 
 export default ProfileScreen;

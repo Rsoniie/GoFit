@@ -8,12 +8,19 @@ const App = ({navigation} : any) => {
   
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigation.replace('Home');
+      navigation.replace('signin');
     }, 1500);
     return () => clearTimeout(timer);
   }, [navigation]);
   
+
   
+
+
+
+
+
+
   return (
   <View style = {globalStyles.container}>
   <View style={globalStyles.container}>
