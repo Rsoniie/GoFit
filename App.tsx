@@ -12,6 +12,7 @@ import CameraScreen from './src/screens/cameraScreen';
 import QuestionnaireScreen from './src/screens/questionScreen';
 import dbchk from './rough/dbcheck';
 import Meter from './src/components/meter';
+import urlcheck from './rough/urlcheck';
 
 
 
@@ -54,6 +55,7 @@ console.log(user, isLoading);
         <Stack.Screen name="questions" component={QuestionnaireScreen} options={{headerShown: false}} />
         <Stack.Screen name="dbchk" component={dbchk} options={{title: "Checking"}} />
         <Stack.Screen name="meter" component={Meter} options={{title: "meter"}} />
+        <Stack.Screen name='urlcheck' component={urlcheck}/>
          
       </Stack.Navigator>
     </NavigationContainer>
