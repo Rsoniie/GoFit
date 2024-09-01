@@ -14,12 +14,10 @@ import dbchk from './rough/dbcheck';
 import Meter from './src/components/meter';
 import urlcheck from './rough/urlcheck';
 import Edit from './src/screens/editProfileScreen';
-// import Dish from './src/components/mapping';
-// import Mappingtest from './rough/mappingtest';
+import Popup from './src/screens/popup';
+import CarouselPage from './rough/carousel';
 
 
-
-// import LoginProvider from './src/utils/loginprovider';
 import { LoginContext } from './src/utils/loginprovider';
 
 // const add = './src/assets/rimg.jpg';
@@ -45,7 +43,7 @@ console.log(user, isLoading);
             title: 'GoFit',
             headerRight: () => (
               <TouchableOpacity onPress={() => navigation.navigate('profile')}>
-               <Image source = {require('C:/Users/91629/Desktop/GoFit/rimg.jpg')} style = {styles.headerImage} />
+               <Image source = {require('C:/Users/91629/Desktop/GoFit/src/assets/man.png')} style = {styles.headerImage} />
               </TouchableOpacity>
             ),
           })}
@@ -60,6 +58,8 @@ console.log(user, isLoading);
         <Stack.Screen name='urlcheck' component={urlcheck}/>
         <Stack.Screen name='edit' component={Edit}/> 
         {/* <Stack.Screen name='map' component={Mappingtest}/>  */}
+        <Stack.Screen name='popup' component={Popup} options = {{headerShown: false}}/> 
+        <Stack.Screen name='carousel' component={CarouselPage}/> 
          
       </Stack.Navigator>
     </NavigationContainer>
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   headerImage: {
     width: 30,  // Adjust width as needed
     height: 30, // Adjust height as needed
-    marginRight: 10, // Optional: Add some margin to the right
+    marginRight: 10,
   },
 });
 

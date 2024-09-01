@@ -80,7 +80,7 @@ const ProfileScreen = ({navigation} : any) => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Image
-        source={require('C:/Users/91629/Desktop/GoFit/rimg.jpg')}
+        source={require('C:/Users/91629/Desktop/GoFit/src/assets/avatar.png')}
         style={styles.profileImage}
       />
       <Text style={globalStyles.title}>{`${firstName} ${lastName}`}</Text>
@@ -101,7 +101,7 @@ const ProfileScreen = ({navigation} : any) => {
 
       
       <View style={styles.option}>
-        <Text style={globalStyles.text}>weight : {weight}</Text>
+        <Text style={globalStyles.text}>Weight : {weight}</Text>
       </View>
 
       <View style={styles.option}>
@@ -129,6 +129,7 @@ const ProfileScreen = ({navigation} : any) => {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     padding: 16,
     backgroundColor: colors.background_primary,
   },
